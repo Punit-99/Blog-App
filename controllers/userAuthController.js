@@ -5,16 +5,19 @@ const bcrypt = require("bcryptjs");
 const SignUp = async (req, res) => {
   const { userName, email, password } = req.body;
   try {
-    let exisitingUser = await UserModel.findOne({ email });
-    if (exisitingUser) {
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({ message: "User Already Exists" });
     }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(`hashpassword${hashedPassword}`);
     const newUser = new UserModel({
       userName,
       email,
-      password,
+      password: hashedPassword,
     });
     await newUser.save();
+    res.redirect("/?modal=open");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });

@@ -1,37 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("modal");
-  const openModalBtns = document.querySelectorAll(
-    "#openModalBtn, #openModalBtn2"
-  );
+  const openModalBtns = document.querySelectorAll("#openModalBtn, #openModalBtn2");
   const loginForm = document.getElementById("loginForm");
   const signUpForm = document.getElementById("signUpForm");
   const toggleSignUp = document.getElementById("toggleSignUp");
   const toggleLogin = document.getElementById("toggleLogin");
 
-  openModalBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      modal.style.display = "block";
-    });
-  });
+  // Function to toggle modal visibility
+  function toggleModal(display) {
+    modal.style.display = display;
+  }
+
+  // Function to toggle between login and sign-up forms
+  function toggleForms(showSignUpForm) {
+    if (showSignUpForm) {
+      loginForm.style.display = "none";
+      signUpForm.style.display = "block";
+    } else {
+      loginForm.style.display = "block";
+      signUpForm.style.display = "none";
+    }
+  }
+
+  // Add event listeners to open modal buttons
+  openModalBtns.forEach(btn => btn.addEventListener("click", () => toggleModal("block")));
 
   // Close modal when clicking outside of the modal content
-  window.addEventListener("click", function (event) {
+  window.addEventListener("click", event => {
     if (event.target === modal) {
-      modal.style.display = "none";
+      toggleModal("none");
     }
   });
 
-  // Show Sign Up form and hide Login form
-  toggleSignUp.addEventListener("click", function (e) {
+  // Add event listeners to toggle between forms
+  toggleSignUp.addEventListener("click", e => {
     e.preventDefault();
-    loginForm.style.display = "none";
-    signUpForm.style.display = "block";
+    toggleForms(true);
   });
 
-  // Show Login form and hide Sign Up form
-  toggleLogin.addEventListener("click", function (e) {
+  toggleLogin.addEventListener("click", e => {
     e.preventDefault();
-    signUpForm.style.display = "none";
-    loginForm.style.display = "block";
+    toggleForms(false);
   });
+
+  // Check if the modal should be opened based on the URL query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('modal') === 'open') {
+    toggleModal("block");
+  }
 });
