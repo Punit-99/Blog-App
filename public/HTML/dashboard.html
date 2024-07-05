@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../CSS/dashboard.css" />
+    <link rel="stylesheet" href="../CSS/blogStructure.css" />
+    <link rel="stylesheet" href="../CSS/writeBlog.css" />
+    <link rel="stylesheet" href="../CSS/modal.css" />
+
+    <!----===== Iconscout CSS ===== -->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+
+    <title>Blog App Dashboard</title>
+  </head>
+  <body>
+    <nav>
+      <div class="logo-name">
+        <div class="logo-image">
+          <img src="../Images//logo.jpg" alt="" />
+        </div>
+        <span class="logo_name">Blog App</span>
+      </div>
+
+      <div class="menu-items">
+        <ul class="nav-links">
+          <li>
+            <a href="#" id="all-blogs-link">
+              <i class="uil uil-estate"></i>
+              <span class="link-name">All Blogs</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" id="write-blog-link">
+              <i class="uil uil-files-landscapes"></i>
+              <span class="link-name">Write Blog</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" id="manage-blogs-link">
+              <i class="uil uil-chart"></i>
+              <span class="link-name">Manage Blogs</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="logout-mode">
+          <li>
+            <a href="#" id="logout-link">
+              <i class="uil uil-signout"></i>
+              <span class="link-name logout">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- -----------------NAV END------------------------ -->
+
+    <section class="dashboard">
+      <div class="top" id="dashboardTop">
+        <i class="uil uil-bars sidebar-toggle"></i>
+        <div class="search-box">
+          <i class="uil uil-search"></i>
+          <input type="text" placeholder="Search here..." />
+        </div>
+        <img src="../Images/profle.jpg" alt="" />
+      </div>
+
+      <div class="dash-content">
+        <div class="overview" id="all-blogs-content">
+          <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text">All Blogs</span>
+          </div>
+          <!-- Content for All Blogs -->
+          <div id="blogSection">
+            <!-- blogs card will generate here -->
+          </div>
+        </div>
+        <!-- -----------ALL BLOGS END-------------------- -->
+
+        <div class="overview" id="write-blog-content" style="display: none">
+          <div class="title">
+            <i class="uil uil-files-landscapes"></i>
+            <span class="text">Write Blog</span>
+          </div>
+          <div id="writeBlogSection">
+            <div class="blog-form">
+              <div class="form-group">
+                <label for="blog-thumbnail">Thumbnail Image:</label>
+                <input
+                  type="file"
+                  id="blog-thumbnail"
+                  name="blog-thumbnail"
+                  accept="image/*"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blog-title">Blog Title:</label>
+                <input
+                  type="text"
+                  id="blog-title"
+                  name="blog-title"
+                  placeholder="Enter your blog title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blog-content">Blog Content:</label>
+                <textarea
+                  id="blog-content"
+                  name="blog-content"
+                  placeholder="Write your blog content here"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <button type="submit">Publish Blog</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ------------WRITE BLOG END------------- -->
+
+        <!-- ---------------------MANAGE BLOG----------------------- -->
+        <div class="overview" id="manage-blogs-content" style="display: none">
+          <div class="title">
+            <i class="uil uil-chart"></i>
+            <span class="text">Manage Blogs</span>
+          </div>
+          <div id="manageBlogSection"></div>
+
+          <!-- ------------------------- -->
+          <div id="modal" class="container editContainer">
+            <div class="wrapper wrapper2">
+              <div class="form-group">
+                <label for="blog-thumbnail">Thumbnail Image:</label>
+                <input
+                  type="file"
+                  id="blog-thumbnail"
+                  name="blog-thumbnail"
+                  accept="image/*"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blog-title">Blog Title:</label>
+                <input
+                  type="text"
+                  id="blog-title"
+                  name="blog-title"
+                  placeholder="Enter your blog title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blog-content">Blog Content:</label>
+                <textarea
+                  class="modalTextarea"
+                  id="blog-content"
+                  name="blog-content"
+                  placeholder="Write your blog content here"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <button type="submit">Publish Blog</button>
+              </div>
+            </div>
+          </div>
+          <!-- ------------------------- -->
+        </div>
+        <!-- ---------------------MANAGE BLOG END----------------------- -->
+      </div>
+    </section>
+
+    <script src="../JS/dashboard.js"></script>
+    <script src="../JS/blogStructure.js"></script>
+    <script src="../JS//dashboardContent.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BloggApp</title>
+    <link rel="stylesheet" href="../CSS/homePage.css" />
+    <link rel="stylesheet" href="../CSS/modal.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="menu">
+        <div class="logo">
+          <a href="#">BlogApp</a>
+        </div>
+        <ul>
+          <li><a href="#" id="openModalBtn">SIGN IN</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="img"></div>
+    <div class="center">
+      <div class="title">Share your story, your style</div>
+      <div class="sub_title">Build a beautiful blog with ease.</div>
+      <div class="btns">
+        <button id="openModalBtn2">Create Your Blog</button>
+      </div>
+    </div>
+    <!-- MODAL -->
+    <div id="modal" class="container">
+      <div class="wrapper">
+        <div class="login form">
+          <form id="loginForm" action="/api/v1/auth/login" method="post">
+            <h2 class="title">Login</h2>
+            <p id="flashMsg"></p>
+            <div class="input-field">
+              <input type="text" id="loginEmail" name="email" required />
+              <label>Enter your email</label>
+            </div>
+            <div class="input-field">
+              <input
+                type="password"
+                id="loginPassword"
+                name="password"
+                required
+              />
+              <label>Enter your password</label>
+            </div>
+            <div class="forget">
+              <a href="#">Forgot password?</a>
+            </div>
+            <div class="btn-container">
+              <button class="LogInBtn" type="submit">Log In</button>
+            </div>
+
+            <div class="register">
+              <p>
+                Don't have an account?
+                <a href="#" id="toggleSignUp">Register</a>
+              </p>
+            </div>
+          </form>
+
+          <!-- Sign Up Form (Initially hidden) -->
+          <form
+            id="signUpForm"
+            action="/api/v1/auth/signup"
+            style="display: none"
+            method="post"
+          >
+            <h2 class="title">Sign Up</h2>
+            <p id="flashMsg"></p>
+            <div class="input-field">
+              <input type="text" id="signUpUserName" name="userName" required />
+              <label>Enter your Username</label>
+            </div>
+            <div class="input-field">
+              <input type="text" id="signUpEmail" name="email" required />
+              <label>Enter your email</label>
+            </div>
+            <div class="input-field">
+              <input
+                type="password"
+                id="signUpPassword"
+                name="password"
+                required
+              />
+              <label>Choose a password</label>
+            </div>
+            <div class="btn-container">
+              <button class="signUpBtn" type="submit">Sign Up</button>
+            </div>
+            <div class="register">
+              <p>
+                Already have an account? <a href="#" id="toggleLogin">Login</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="../JS/modal.js"></script>
+    <!-- <script src="../JS/auth.js"></script> -->
+  </body>
+</html>
