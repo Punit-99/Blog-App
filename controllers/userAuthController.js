@@ -10,7 +10,6 @@ const SignUp = async (req, res) => {
       return res.status(400).json({ message: "User Already Exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(`hashpassword${hashedPassword}`);
     const newUser = new UserModel({
       userName,
       email,

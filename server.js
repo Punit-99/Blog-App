@@ -4,6 +4,7 @@ const connectDB = require("./DB/connection");
 const bodyParser = require("body-parser");
 const path = require("path");
 const userAuthRoute = require("./routes/userAuthRoute");
+const blogRoute = require("./routes/blogRoute");
 const app = express();
 
 // Middlewares
@@ -20,6 +21,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/HTML", "homepage.html"));
 });
 app.use("/api/v1/auth", userAuthRoute);
+app.use("/api/v1/blog", blogRoute);
+app.get('/dashboard',(req,res)=>{
+  res.sendFile(path.join(__dirname,"public/HTML","dashboard.html"))
+})
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
