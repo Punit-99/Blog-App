@@ -86,7 +86,6 @@
 @media screen and (min-width: 900px) {
   .blog-post {
     flex-direction: row;
-    align-items: flex-start; /* Adjusted for better alignment */
   }
 
   .blog-post img {
