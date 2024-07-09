@@ -9,6 +9,8 @@ const app = express();
 
 // Middlewares
 app.use(express.static(path.join(__dirname, "public")));
+// Serve static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -22,9 +24,9 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", userAuthRoute);
 app.use("/api/v1/blog", blogRoute);
-app.get('/dashboard',(req,res)=>{
-  res.sendFile(path.join(__dirname,"public/HTML","dashboard.html"))
-})
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/HTML", "dashboard.html"));
+});
 
 const start = async () => {
   try {

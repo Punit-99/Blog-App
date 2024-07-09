@@ -1,4 +1,20 @@
+// controllers/blogController.js
 const BlogModel = require("../models/blogModel");
+const multer = require("multer");
+const path = require("path");
+
+// Configure Multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Set the destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)); // Set the file name
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Get All Blogs
 const getAllBlogs = async (req, res) => {
@@ -7,16 +23,19 @@ const getAllBlogs = async (req, res) => {
     res.json(blogs);
   } catch (err) {
     console.log(err);
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
-// Create Blogs
+// Create Blog
 const createBlogs = async (req, res) => {
   const { title, content, author } = req.body;
-  if (!title || !content || !author) {
+  const thumbnail = req.file ? req.file.path : '';
+
+  if (!title || !content || !author || !thumbnail) {
     return res
       .status(400)
-      .json({ message: "Please provide title, content, and author" });
+      .json({ message: "Please provide title, content, author, and thumbnail" });
   }
 
   try {
@@ -24,9 +43,10 @@ const createBlogs = async (req, res) => {
       title,
       content,
       author,
+      thumbnail,
     });
     await newBlog.save();
-    res.status(201).json({ message: "Blog Published" });
+    res.status(201).json({ message: "Blog Published", blog: newBlog });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
@@ -75,7 +95,7 @@ const deleteBlogs = async (req, res) => {
 
 module.exports = {
   getAllBlogs,
-  createBlogs,
+  createBlogs: [upload.single('thumbnail'), createBlogs],
   updateBlogs,
   deleteBlogs,
 };
