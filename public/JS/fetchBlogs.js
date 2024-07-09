@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     blogPostElement.innerHTML = blogPostContent;
     manageBlogSection.appendChild(blogPostElement);
 
-    // delete function
+    // delete Blog function
     const deleteBtn = blogPostElement.querySelector(".deleteBtn");
     deleteBtn.addEventListener("click", async () => {
       try {
@@ -99,10 +99,36 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (deleteBlog.ok) {
           console.log("Blog deleted");
+          blogPostElement.remove(); // Remove the blog post element from the DOM
         }
       } catch (err) {
-        console.log("Blog not deleted");
+        console.log("Blog not deleted", err);
       }
+    });
+
+    // Update blog function
+    const editBtn = blogPostElement.querySelector(".editBtn");
+    editBtn.addEventListener("click", () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+
+      const editContainer = document.querySelector(".editContainer");
+      const blogId = editContainer.querySelector("#blogId");
+      const blogTitle = editContainer.querySelector("#blog-title");
+      const blogContent = editContainer.querySelector("#blog-content");
+
+      blogId.value = blogPost._id;
+      blogTitle.value = blogPost.title;
+      blogContent.value = blogPost.content;
+
+      const updateBtn = editContainer.querySelector("#update-btn");
+      updateBtn.addEventListener(
+        "click",
+        () => {
+          updateBlog(blogId.value, blogTitle.value, blogContent.value);
+        },
+        { once: true }
+      );
     });
 
     // read more button functionality
@@ -143,29 +169,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Open modal on edit button click
-  manageBlogSection.addEventListener("click", function (event) {
-    const editBtn = event.target.closest(".editBtn");
-    if (editBtn) {
-      modal.style.display = "block";
+  // -----Update Blog-----
+  const updateBlog = async (id, title, content) => {
+    try {
+      const response = await fetch(`/api/v1/blog/updateblog/${id}`, {
+        method: "PATCH", // hold
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content }),
+      });
+
+      if (response.ok) {
+        const updatedBlog = await response.json();
+        console.log("Blog updated:", updatedBlog);
+        modal.style.display = "none";
+        location.reload();
+      } else {
+        console.error("Update failed:", response.statusText);
+      }
+    } catch (err) {
+      console.log(`Could not update blog ${err}`);
     }
-  });
-
-  // // Delete Blog
-  // const deleteBlog = async (blogId) => {
-  //   try {
-  //     const response = await fetch(`/api/v1/blog/deleteblog/${blogId}`, {
-  //       method: "DELETE",
-  //     });
-
-  //     if (!response.ok) {
-  //       console.log("Blog not Deleted");
-  //       throw new Error("Failed to delete blog");
-  //     }
-
-  //     console.log(`Blog ${blogId} deleted successfully`);
-  //   } catch (err) {
-  //     console.error(`Blog not deleted: ${err}`);
-  //   }
-  // };
+  };
 });

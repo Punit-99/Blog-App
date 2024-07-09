@@ -33,11 +33,28 @@ const createBlogs = async (req, res) => {
   }
 };
 
-// Update Blog
 const updateBlogs = async (req, res) => {
+  const blogId = req.params.id;
   try {
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+      blogId,
+      {
+        title: req.body.title,
+        content: req.body.content,
+      },
+      { new: true }
+    );
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Blog updated successfully", blog: updatedBlog });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
