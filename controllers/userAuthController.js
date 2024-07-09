@@ -1,4 +1,4 @@
-const UserModel = require("../models/userModel");
+const UserModel = require("../models/userAuth");
 const bcrypt = require("bcryptjs");
 
 // SignUp Route

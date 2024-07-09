@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
-const UserModal = mongoose.model("UserModal", userSchema, "BlogApp-userAuth");
 
-module.exports = UserModal;
+const UserModel = mongoose.model("UserModel", userSchema, "BlogApp-userAuth");
+
+module.exports = UserModel;
