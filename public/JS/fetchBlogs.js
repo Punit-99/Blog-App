@@ -27,9 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="blog-post-content">
         <h2 class="blog-post-title">${blogPost.title}</h2>
         <p class="blog-post-description">...</p>
-        <p class="blog-post-full-content" style="display:none;">${blogPost.content}</p>
+        <p class="blog-post-full-content" style="display:none;">${
+          blogPost.content
+        }</p>
         <a href="#" class="read-more">read more</a>
-        <div class="blog-post-footer">${new Date(blogPost.createdAt).toLocaleString()}</div>
+        <div class="blog-post-footer">${new Date(
+          blogPost.createdAt
+        ).toLocaleString()}</div>
       </div>
     `;
 
@@ -38,18 +42,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // read more button functionality
     const readMoreLink = blogPostElement.querySelector(".read-more");
-    const fullContent = blogPostElement.querySelector(".blog-post-full-content");
+    const fullContent = blogPostElement.querySelector(
+      ".blog-post-full-content"
+    );
 
     readMoreLink.addEventListener("click", function (event) {
       event.preventDefault();
-      if (fullContent.style.display === "none" || fullContent.style.display === "") {
+      if (
+        fullContent.style.display === "none" ||
+        fullContent.style.display === ""
+      ) {
         fullContent.style.display = "block";
         readMoreLink.textContent = "read less";
-        blogPostElement.querySelector(".blog-post-description").style.display = "none";
+        blogPostElement.querySelector(".blog-post-description").style.display =
+          "none";
       } else {
         fullContent.style.display = "none";
         readMoreLink.textContent = "read more";
-        blogPostElement.querySelector(".blog-post-description").style.display = "block";
+        blogPostElement.querySelector(".blog-post-description").style.display =
+          "block";
       }
     });
   };
@@ -67,9 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="blog-post-content">
         <h2 class="blog-post-title">${blogPost.title}</h2>
         <p class="blog-post-description">...</p>
-        <p class="blog-post-full-content" style="display: none">${blogPost.content}</p>
+        <p class="blog-post-full-content" style="display: none">${
+          blogPost.content
+        }</p>
         <a href="#" class="read-more">read more</a>
-        <div class="blog-post-footer">${new Date(blogPost.createdAt).toLocaleString()}</div>
+        <div class="blog-post-footer">${new Date(
+          blogPost.createdAt
+        ).toLocaleString()}</div>
       </div>
       <div class="actionBtn">
         <button id="editBtn" class="editBtn">EDIT</button>
@@ -84,9 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteBtn = blogPostElement.querySelector(".deleteBtn");
     deleteBtn.addEventListener("click", async () => {
       try {
-        const deleteBlog = await fetch(`/api/v1/blog/deleteblog/${blogPost._id}`, {
-          method: "DELETE",
-        });
+        const deleteBlog = await fetch(
+          `/api/v1/blog/deleteblog/${blogPost._id}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (deleteBlog.ok) {
           console.log("Blog deleted");
           blogPostElement.remove(); // Remove the blog post element from the DOM
@@ -106,31 +124,48 @@ document.addEventListener("DOMContentLoaded", () => {
       const blogId = editContainer.querySelector("#blogId");
       const blogTitle = editContainer.querySelector("#blog-title");
       const blogContent = editContainer.querySelector("#blog-content");
+      const blogThumbnail = editContainer.querySelector("#blog-thumbnail");
 
       blogId.value = blogPost._id;
       blogTitle.value = blogPost.title;
       blogContent.value = blogPost.content;
 
       const updateBtn = editContainer.querySelector("#update-btn");
-      updateBtn.addEventListener("click", () => {
-        updateBlog(blogId.value, blogTitle.value, blogContent.value);
-      }, { once: true });
+      updateBtn.addEventListener(
+        "click",
+        () => {
+          updateBlog(
+            blogId.value,
+            blogTitle.value,
+            blogContent.value,
+            blogThumbnail.files[0]
+          );
+        },
+        { once: true }
+      );
     });
 
     // read more button functionality
     const readMoreLink = blogPostElement.querySelector(".read-more");
-    const fullContent = blogPostElement.querySelector(".blog-post-full-content");
+    const fullContent = blogPostElement.querySelector(
+      ".blog-post-full-content"
+    );
 
     readMoreLink.addEventListener("click", function (event) {
       event.preventDefault();
-      if (fullContent.style.display === "none" || fullContent.style.display === "") {
+      if (
+        fullContent.style.display === "none" ||
+        fullContent.style.display === ""
+      ) {
         fullContent.style.display = "block";
         readMoreLink.textContent = "read less";
-        blogPostElement.querySelector(".blog-post-description").style.display = "none";
+        blogPostElement.querySelector(".blog-post-description").style.display =
+          "none";
       } else {
         fullContent.style.display = "none";
         readMoreLink.textContent = "read more";
-        blogPostElement.querySelector(".blog-post-description").style.display = "block";
+        blogPostElement.querySelector(".blog-post-description").style.display =
+          "block";
       }
     });
   };
@@ -149,14 +184,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // -----Update Blog-----
-  const updateBlog = async (id, title, content) => {
+  const updateBlog = async (id, title, content, thumbnail) => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (thumbnail) {
+      formData.append("thumbnail", thumbnail);
+    }
+
     try {
       const response = await fetch(`/api/v1/blog/updateblog/${id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, content }),
+        body: formData,
       });
 
       if (response.ok) {

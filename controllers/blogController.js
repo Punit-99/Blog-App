@@ -1,4 +1,3 @@
-// controllers/blogController.js
 const BlogModel = require("../models/blogModel");
 const multer = require("multer");
 const path = require("path");
@@ -6,12 +5,15 @@ const path = require("path");
 // Configure Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Set the destination folder for uploaded files
+    cb(null, "uploads/"); // Set the destination folder for uploaded files
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)); // Set the file name
-  }
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    ); // Set the file name
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -30,12 +32,14 @@ const getAllBlogs = async (req, res) => {
 // Create Blog
 const createBlogs = async (req, res) => {
   const { title, content, author } = req.body;
-  const thumbnail = req.file ? req.file.path : '';
+  const thumbnail = req.file ? req.file.path : "";
 
   if (!title || !content || !author || !thumbnail) {
     return res
       .status(400)
-      .json({ message: "Please provide title, content, author, and thumbnail" });
+      .json({
+        message: "Please provide title, content, author, and thumbnail",
+      });
   }
 
   try {
@@ -53,17 +57,21 @@ const createBlogs = async (req, res) => {
   }
 };
 
+// Update Blog
 const updateBlogs = async (req, res) => {
   const blogId = req.params.id;
+  const { title, content } = req.body;
+  const thumbnail = req.file ? req.file.path : null;
+
   try {
-    const updatedBlog = await BlogModel.findByIdAndUpdate(
-      blogId,
-      {
-        title: req.body.title,
-        content: req.body.content,
-      },
-      { new: true }
-    );
+    const updateData = { title, content };
+    if (thumbnail) {
+      updateData.thumbnail = thumbnail;
+    }
+
+    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, updateData, {
+      new: true,
+    });
 
     if (!updatedBlog) {
       return res.status(404).json({ message: "Blog not found" });
@@ -95,7 +103,7 @@ const deleteBlogs = async (req, res) => {
 
 module.exports = {
   getAllBlogs,
-  createBlogs: [upload.single('thumbnail'), createBlogs],
-  updateBlogs,
+  createBlogs: [upload.single("thumbnail"), createBlogs],
+  updateBlogs: [upload.single("thumbnail"), updateBlogs],
   deleteBlogs,
 };

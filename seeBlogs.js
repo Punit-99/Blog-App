@@ -1,7 +1,7 @@
-// seedBlogs.js
 const mongoose = require("mongoose");
 const BlogModel = require("./models/blogModel");
 const dotenv = require("dotenv").config();
+const path = require("path");
 
 const connectDB = async () => {
   try {
@@ -24,16 +24,19 @@ const seedBlogs = async () => {
       title: "First Blog Post",
       content: "This is the content of the first blog post.",
       author: "Author One",
+      thumbnail: path.join("uploads", "sample1.jpg"), // Path to the sample image
     },
     {
       title: "Second Blog Post",
       content: "This is the content of the second blog post.",
       author: "Author Two",
+      thumbnail: path.join("uploads", "sample2.jpg"), // Path to the sample image
     },
     {
       title: "Third Blog Post",
       content: "This is the content of the third blog post.",
       author: "Author Three",
+      thumbnail: path.join("uploads", "sample3.jpg"), // Path to the sample image
     },
   ];
 
