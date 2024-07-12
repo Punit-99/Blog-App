@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const userAuthRoute = require("./routes/userAuthRoute");
 const blogRoute = require("./routes/blogRoute");
+const cookieParser = require("cookie-parser");
+const { authenticateToken } = require("./middleware/auth");
+
 const app = express();
 
 // Middlewares
@@ -17,6 +20,7 @@ app.use(
     extended: true,
   })
 );
+app.use(cookieParser());
 
 // Routes
 app.get("/", (req, res) => {
@@ -24,7 +28,9 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", userAuthRoute);
 app.use("/api/v1/blog", blogRoute);
-app.get("/dashboard", (req, res) => {
+
+app.get("/dashboard", authenticateToken, (req, res) => {
+  // here
   res.sendFile(path.join(__dirname, "public/HTML", "dashboard.html"));
 });
 

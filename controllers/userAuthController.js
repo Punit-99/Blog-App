@@ -1,5 +1,6 @@
 const UserModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const { generateToken } = require("../middleware/auth");
 
 // SignUp Route
 const SignUp = async (req, res) => {
@@ -37,6 +38,10 @@ const Login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+    const token = generateToken({ id: user._id, email: user.email });
+    res.cookie();
+    //send token as cookies
+    res.cookie("token", token, { httpOnly: true });
     res.redirect("/dashboard");
   } catch (err) {
     console.error(err);
