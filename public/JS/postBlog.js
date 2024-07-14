@@ -17,10 +17,14 @@ const publishBlog = async () => {
       const response = await fetch("/api/v1/blog/createblog", {
         method: "POST",
         body: formData,
+        credentials: "include", // Ensure cookies are sent with the request
       });
 
+      console.log("Response Status:", response.status);
+
       if (!response.ok) {
-        console.log("Blog Not published");
+        const errorText = await response.text();
+        console.log("Blog Not published:", errorText);
         return;
       }
       const newBlog = await response.json();

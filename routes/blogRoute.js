@@ -8,11 +8,13 @@ const {
   createBlogs,
   updateBlogs,
   deleteBlogs,
+  getUserBlog,
 } = require("../controllers/blogController");
 
-router.get("/allblogs", getAllBlogs);
-router.post("/createblog", createBlogs);
-router.patch("/updateblog/:id", updateBlogs);
-router.delete("/deleteblog/:id", deleteBlogs);
+router.get("/allblogs", authenticateToken, getAllBlogs);
+router.get("/userblog", authenticateToken, getUserBlog);
+router.post("/createblog", authenticateToken, createBlogs); // Ensure this route is protected by the middleware
+router.patch("/updateblog/:id", authenticateToken, updateBlogs);
+router.delete("/deleteblog/:id", authenticateToken, deleteBlogs);
 
 module.exports = router;

@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
-const env = require("dotenv").config();
+const dotenv = require("dotenv");
 
+dotenv.config();
 const secretKey = process.env.SECRET_KEY;
 
 const generateToken = (payload) => {
-  const token = jwt.sign({ payload }, secretKey, { expiresIn: "1000" });
+  const token = jwt.sign(payload, secretKey, { expiresIn: "10000d" });
   return token;
 };
 
@@ -12,17 +13,18 @@ const authenticateToken = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    console.log(`login first`);
-    return res.redirect("/");
+    console.log("No token found, redirecting to login");
+    return res.status(401).json({ message: "No token provided" });
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      return res.redirect("/");
+      console.log("Token verification failed:", err);
+      return res.status(403).json({ message: "Token verification failed" });
     }
-    req.user = user;
+    req.user = decoded; // Setting the decoded payload to req.user
     next();
   });
 };
 
-module.exports = { authenticateToken, generateToken };
+module.exports = { generateToken, authenticateToken };

@@ -29,17 +29,44 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
-// Create Blog
+// Get User Blog
+const getUserBlog = async (req, res) => {
+  try {
+    const userId = req.user.id; // Access user ID from decoded token
+    if (!userId) {
+      return res.status(500).json({ message: "User Id not found" });
+    }
+    const myBlogs = await BlogModel.find({ createdBy: userId });
+
+    // Uncomment the line below to log userId to the console
+    console.log(userId);
+
+    // Optionally, send the userId and blogs in the response
+    res.status(200).json(myBlogs);
+  } catch (error) {
+    console.error("Error fetching user blog:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+};
+
 const createBlogs = async (req, res) => {
   const { title, content, author } = req.body;
   const thumbnail = req.file ? req.file.path : "";
 
+  // Ensure req.user is set correctly
+  if (!req.user || !req.user.id) {
+    console.log("User not authenticated or payload missing");
+    return res.status(401).json({ message: "User not authenticated" });
+  }
+
+  const createdBy = req.user.id; // Access the user ID directly
+
   if (!title || !content || !author || !thumbnail) {
-    return res
-      .status(400)
-      .json({
-        message: "Please provide title, content, author, and thumbnail",
-      });
+    return res.status(400).json({
+      message: "Please provide title, content, author, and thumbnail",
+    });
   }
 
   try {
@@ -48,6 +75,7 @@ const createBlogs = async (req, res) => {
       content,
       author,
       thumbnail,
+      createdBy, // Set the createdBy field with the user ID
     });
     await newBlog.save();
     res.status(201).json({ message: "Blog Published", blog: newBlog });
@@ -103,6 +131,7 @@ const deleteBlogs = async (req, res) => {
 
 module.exports = {
   getAllBlogs,
+  getUserBlog,
   createBlogs: [upload.single("thumbnail"), createBlogs],
   updateBlogs: [upload.single("thumbnail"), updateBlogs],
   deleteBlogs,
