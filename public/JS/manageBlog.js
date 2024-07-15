@@ -1,30 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Fetch and manage user blogs
   const myBlogs = async () => {
     try {
       const response = await fetch("/api/v1/blog/userblog");
-      const myBlogs = await response.json();
-      manageMyBlogs(myBlogs);
-      myBlogs.forEach((blog) => {
+      const blogs = await response.json();
+      blogs.forEach((blog) => {
+        manageMyBlogs(blog);
         console.log(blog);
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Failed to fetch blogs", error);
+    }
   };
 
   // Display user blogs in the manageBlogSection
-  const manageMyBlogs = (myblogPost) => {
-    const blogPostElement = createBlogPostElement(myblogPost);
+  const manageMyBlogs = (blogPost) => {
+    const blogPostElement = createBlogPostElement(blogPost);
 
     // Add edit and delete functionality
     const deleteBtn = blogPostElement.querySelector(".deleteBtn");
     deleteBtn.addEventListener("click", async () => {
       try {
-        const deleteBlog = await fetch(
-          `/api/v1/blog/deleteblog/${myblogPost._id}`,
+        const deleteResponse = await fetch(
+          `/api/v1/blog/deleteblog/${blogPost._id}`,
           {
             method: "DELETE",
           }
         );
-        if (deleteBlog.ok) {
+        if (deleteResponse.ok) {
           console.log("Blog deleted");
           blogPostElement.remove(); // Remove the blog post element from the DOM
         }
@@ -43,9 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const blogContent = editContainer.querySelector("#blog-content");
       const blogThumbnail = editContainer.querySelector("#blog-thumbnail");
 
-      blogId.value = myblogPost._id;
-      blogTitle.value = myblogPost.title;
-      blogContent.value = myblogPost.content;
+      blogId.value = blogPost._id;
+      blogTitle.value = blogPost.title;
+      blogContent.value = blogPost.content;
 
       const updateBtn = editContainer.querySelector("#update-btn");
       updateBtn.addEventListener(
@@ -62,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
+    const manageBlogSection = document.querySelector("#manageBlogSection"); // Ensure this element is selected
     manageBlogSection.appendChild(blogPostElement);
   };
 
@@ -151,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Close modal when clicking outside of it
   window.addEventListener("click", (event) => {
+    const modal = document.querySelector(".modal"); // Ensure modal is selected correctly
     if (event.target === modal) {
       modal.style.display = "none";
     }

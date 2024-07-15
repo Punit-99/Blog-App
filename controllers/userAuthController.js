@@ -38,9 +38,9 @@ const Login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    
+
     const token = generateToken({ id: user._id, email: user.email });
-    
+
     // Send token as a cookie
     res.cookie("token", token, { httpOnly: true, secure: false }); // 'secure: true' in production
     res.redirect("/dashboard");
@@ -50,7 +50,13 @@ const Login = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 module.exports = {
   SignUp,
   Login,
+  logout,
 };
