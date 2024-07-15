@@ -13,7 +13,7 @@ const {
 
 router.get("/allblogs", authenticateToken, getAllBlogs);
 router.get("/userblog", authenticateToken, getUserBlog);
-router.post("/createblog", authenticateToken, createBlogs); // Ensure this route is protected by the middleware
+router.post("/createblog", authenticateToken, createBlogs);
 router.patch("/updateblog/:id", authenticateToken, updateBlogs);
 router.delete("/deleteblog/:id", authenticateToken, deleteBlogs);
 

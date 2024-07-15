@@ -4,8 +4,7 @@ const publishBlog = async () => {
   const blogTitle = document.getElementById("blog-title").value.trim();
   const blogContent = document.getElementById("blog-content").value.trim();
   const blogThumbnail = document.getElementById("blog-thumbnail").files[0];
-  const author = "exampleUsername"; // Replace with actual username
-
+  const author = "exampleUsername";
   if (blogTitle !== "" && blogContent !== "" && author && blogThumbnail) {
     const formData = new FormData();
     formData.append("title", blogTitle);
@@ -17,7 +16,7 @@ const publishBlog = async () => {
       const response = await fetch("/api/v1/blog/createblog", {
         method: "POST",
         body: formData,
-        credentials: "include", // Ensure cookies are sent with the request
+        credentials: "include",
       });
 
       console.log("Response Status:", response.status);
@@ -31,7 +30,6 @@ const publishBlog = async () => {
       document.getElementById("blog-title").value = "";
       document.getElementById("blog-content").value = "";
       document.getElementById("blog-thumbnail").value = "";
-      console.log("Blog published:", newBlog);
     } catch (err) {
       console.log("Blog could not publish", err);
     }

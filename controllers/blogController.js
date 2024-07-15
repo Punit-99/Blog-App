@@ -37,11 +37,6 @@ const getUserBlog = async (req, res) => {
       return res.status(500).json({ message: "User Id not found" });
     }
     const myBlogs = await BlogModel.find({ createdBy: userId });
-
-    // Uncomment the line below to log userId to the console
-    console.log(userId);
-
-    // Optionally, send the userId and blogs in the response
     res.status(200).json(myBlogs);
   } catch (error) {
     console.error("Error fetching user blog:", error);
@@ -75,7 +70,7 @@ const createBlogs = async (req, res) => {
       content,
       author,
       thumbnail,
-      createdBy, // Set the createdBy field with the user ID
+      createdBy,
     });
     await newBlog.save();
     res.status(201).json({ message: "Blog Published", blog: newBlog });

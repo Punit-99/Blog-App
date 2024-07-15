@@ -13,14 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS middleware
-const cors = require("cors");
-app.use(
-  cors({
-    origin: "http://localhost:3000", // Adjust according to your frontend URL
-    credentials: true, // Enable credentials (cookies)
-  })
-);
 // Middlewares
 app.use(express.static(path.join(__dirname, "public")));
 // Serve static files
@@ -35,7 +27,6 @@ app.use("/api/v1/blog", authenticateToken);
 app.use("/api/v1/blog", blogRoute);
 
 app.get("/dashboard", authenticateToken, (req, res) => {
-  // here
   res.sendFile(path.join(__dirname, "public/HTML", "dashboard.html"));
 });
 

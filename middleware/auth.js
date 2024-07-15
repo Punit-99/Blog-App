@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
 
   if (!token) {
     console.log("No token found, redirecting to login");
-    return res.status(401).json({ message: "No token provided" });
+    return res.redirect("/").json({ message: "provide authentication" });
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
@@ -22,7 +22,7 @@ const authenticateToken = (req, res, next) => {
       console.log("Token verification failed:", err);
       return res.status(403).json({ message: "Token verification failed" });
     }
-    req.user = decoded; // Setting the decoded payload to req.user
+    req.user = decoded; // decoded
     next();
   });
 };

@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Fetch and manage user blogs
   const myBlogs = async () => {
     try {
       const response = await fetch("/api/v1/blog/userblog");
       const blogs = await response.json();
       blogs.forEach((blog) => {
         manageMyBlogs(blog);
-        console.log(blog);
       });
     } catch (error) {
       console.error("Failed to fetch blogs", error);
@@ -142,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         const updatedBlog = await response.json();
-        console.log("Blog updated:", updatedBlog);
         modal.style.display = "none";
         location.reload();
       } else {

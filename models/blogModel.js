@@ -23,7 +23,7 @@ const blogSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "UserModel", // Updated to match the user model name
+    ref: "UserModel",
   },
 });
 
